@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react'
 import { Calendar, Clock } from 'lucide-react'
 import { supabase } from '@/lib/supabase/client'
+import { Shift } from '@/lib/supabase/types'
 
 export default function SchedulePage() {
-  const [shifts, setShifts] = useState<any[]>([])
+  const [shifts, setShifts] = useState<Shift[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function SchedulePage() {
         .limit(20)
 
       if (error) throw error
-      setShifts(data || [])
+      setShifts((data as unknown as Shift[]) || [])
     } catch (error) {
       console.error('Error fetching shifts:', error)
     } finally {
@@ -94,7 +95,7 @@ export default function SchedulePage() {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h2>
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-gray-600">Today's Shifts</p>
+                <p className="text-sm text-gray-600">Today&apos;s Shifts</p>
                 <p className="text-2xl font-bold text-gray-900">{shifts.filter(s => s.shift_date === new Date().toISOString().split('T')[0]).length}</p>
               </div>
               <div>

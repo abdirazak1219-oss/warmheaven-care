@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react'
 import { FileText, Plus } from 'lucide-react'
 import { supabase } from '@/lib/supabase/client'
+import { DailyReport } from '@/lib/supabase/types'
 
 export default function DailyReportsPage() {
-  const [reports, setReports] = useState<any[]>([])
+  const [reports, setReports] = useState<DailyReport[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function DailyReportsPage() {
         .limit(50)
 
       if (error) throw error
-      setReports(data || [])
+      setReports((data as unknown as DailyReport[]) || [])
     } catch (error) {
       console.error('Error:', error)
     } finally {
@@ -57,11 +58,11 @@ export default function DailyReportsPage() {
                   <span className="text-sm text-gray-500">{report.report_date}</span>
                 </div>
                 <div className="mt-3 grid grid-cols-3 gap-4 text-sm">
-                  {report.mood && <div><span className="font-medium">Mood:</span> {report.mood}</div>}
-                  {report.appetite && <div><span className="font-medium">Appetite:</span> {report.appetite}</div>}
-                  {report.sleep_quality && <div><span className="font-medium">Sleep:</span> {report.sleep_quality}</div>}
+                  {(report as any).mood && <div><span className="font-medium">Mood:</span> {(report as any).mood}</div>}
+                  {(report as any).appetite && <div><span className="font-medium">Appetite:</span> {(report as any).appetite}</div>}
+                  {(report as any).sleep_quality && <div><span className="font-medium">Sleep:</span> {(report as any).sleep_quality}</div>}
                 </div>
-                {report.notes && <p className="mt-2 text-sm text-gray-700">{report.notes}</p>}
+                {(report as any).notes && <p className="mt-2 text-sm text-gray-700">{(report as any).notes}</p>}
               </div>
             </div>
           </div>

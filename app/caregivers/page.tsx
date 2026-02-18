@@ -14,7 +14,7 @@ interface Caregiver {
   role: string
   hourly_rate: number
   skills: string[]
-  certifications: any[]
+  certifications: string[]
 }
 
 export default function CaregiversPage() {
@@ -35,7 +35,7 @@ export default function CaregiversPage() {
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      setCaregivers(data || [])
+      setCaregivers((data as unknown as Caregiver[]) || [])
     } catch (error) {
       console.error('Error fetching caregivers:', error)
     } finally {
@@ -112,7 +112,7 @@ export default function CaregiversPage() {
         <div className="bg-white border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-600">Avg. Hourly Rate</p>
           <p className="text-2xl font-bold text-teal-600">
-            ${(caregivers.reduce((sum, c) => sum + (c.hourly_rate || 0), 0) / caregivers.length).toFixed(2)}
+            ${caregivers.length > 0 ? (caregivers.reduce((sum, c) => sum + (c.hourly_rate || 0), 0) / caregivers.length).toFixed(2) : '0.00'}
           </p>
         </div>
       </div>

@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react'
 import { Plus, Search, FileText } from 'lucide-react'
 import { supabase } from '@/lib/supabase/client'
+import { CarePlan } from '@/lib/supabase/types'
 
 export default function CarePlansPage() {
-  const [carePlans, setCarePlans] = useState<any[]>([])
+  const [carePlans, setCarePlans] = useState<CarePlan[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function CarePlansPage() {
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      setCarePlans(data || [])
+      setCarePlans((data as unknown as CarePlan[]) || [])
     } catch (error) {
       console.error('Error fetching care plans:', error)
     } finally {
@@ -70,11 +71,11 @@ export default function CarePlansPage() {
               <div className="flex items-start">
                 <FileText className="h-6 w-6 text-teal-600 mr-3 mt-1" />
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{plan.title}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">{(plan as any).title}</h3>
                   <p className="text-sm text-gray-600 mt-1">
                     Client: {plan.client?.first_name} {plan.client?.last_name}
                   </p>
-                  <p className="text-sm text-gray-500 mt-1">{plan.description}</p>
+                  <p className="text-sm text-gray-500 mt-1">{(plan as any).description}</p>
                 </div>
               </div>
               <span className={`px-3 py-1 text-xs font-medium rounded-full capitalize ${getStatusColor(plan.status)}`}>

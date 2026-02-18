@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react'
 import { Shield, Search } from 'lucide-react'
 import { supabase } from '@/lib/supabase/client'
+import { AuditLog } from '@/lib/supabase/types'
 
 export default function AuditLogsPage() {
-  const [logs, setLogs] = useState<any[]>([])
+  const [logs, setLogs] = useState<AuditLog[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function AuditLogsPage() {
         .limit(100)
 
       if (error) throw error
-      setLogs(data || [])
+      setLogs((data as unknown as AuditLog[]) || [])
     } catch (error) {
       console.error('Error:', error)
     } finally {
